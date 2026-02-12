@@ -73,14 +73,20 @@ export function extractBrowserInfo(userAgent: string): {
 
 	const ua = userAgent.toLowerCase();
 
-	if (ua.includes('chrome') && !ua.includes('edg')) {
-		const match = ua.match(/chrome\/([\d.]+)/);
-		return { name: 'Chrome', version: match ? match[1] : 'unknown' };
+	// Opera must be checked before Chrome, as Opera UA contains "Chrome"
+	if (ua.includes('opera') || ua.includes('opr')) {
+		const match = ua.match(/(?:opera|opr)\/([\d.]+)/);
+		return { name: 'Opera', version: match ? match[1] : 'unknown' };
 	}
 
 	if (ua.includes('edg')) {
 		const match = ua.match(/edg\/([\d.]+)/);
 		return { name: 'Edge', version: match ? match[1] : 'unknown' };
+	}
+
+	if (ua.includes('chrome')) {
+		const match = ua.match(/chrome\/([\d.]+)/);
+		return { name: 'Chrome', version: match ? match[1] : 'unknown' };
 	}
 
 	if (ua.includes('firefox')) {
@@ -91,11 +97,6 @@ export function extractBrowserInfo(userAgent: string): {
 	if (ua.includes('safari') && !ua.includes('chrome')) {
 		const match = ua.match(/version\/([\d.]+)/);
 		return { name: 'Safari', version: match ? match[1] : 'unknown' };
-	}
-
-	if (ua.includes('opera') || ua.includes('opr')) {
-		const match = ua.match(/(?:opera|opr)\/([\d.]+)/);
-		return { name: 'Opera', version: match ? match[1] : 'unknown' };
 	}
 
 	return { name: 'unknown', version: 'unknown' };
@@ -125,16 +126,17 @@ export function extractOSInfo(userAgent: string): {
 		return { name: 'Windows', version: 'unknown' };
 	}
 
-	if (ua.includes('mac os x')) {
-		const match = ua.match(/mac os x ([\d_]+)/);
-		const version = match ? match[1].replace(/_/g, '.') : 'unknown';
-		return { name: 'macOS', version };
-	}
-
+	// iOS must be checked before macOS, as iPhone/iPad UAs contain "Mac OS X"
 	if (ua.includes('iphone') || ua.includes('ipad')) {
 		const match = ua.match(/os ([\d_]+)/);
 		const version = match ? match[1].replace(/_/g, '.') : 'unknown';
 		return { name: 'iOS', version };
+	}
+
+	if (ua.includes('mac os x')) {
+		const match = ua.match(/mac os x ([\d_]+)/);
+		const version = match ? match[1].replace(/_/g, '.') : 'unknown';
+		return { name: 'macOS', version };
 	}
 
 	if (ua.includes('android')) {
