@@ -262,7 +262,7 @@ export async function reverseGeocode(
 			return null;
 		}
 
-		const data = await response.json();
+		const data = await response.json() as Record<string, any>;
 
 		const address = data.address || {};
 		const city = address.city || address.town || address.village || address.county || null;
