@@ -1,12 +1,12 @@
 /**
- * Global configuration for @tinyland-inc/tinyland-security
+ * Global configuration for @tummycrypt/tinyland-security
  *
  * Provides a singleton configuration store that replaces
  * SvelteKit's $env/dynamic/private and $lib/server/logger imports.
  *
  * Usage:
  * ```typescript
- * import { configureSecurity } from '@tinyland-inc/tinyland-security';
+ * import { configureSecurity } from '@tummycrypt/tinyland-security';
  *
  * configureSecurity({
  *   config: {

@@ -1,5 +1,5 @@
 """
-BUILD.bazel for @tinyland-inc/tinyland-security.
+BUILD.bazel for @tummycrypt/tinyland-security.
 
 Dual-mode build: works with both pnpm (standalone) and Bazel (CI/production).
   Standalone: cd packages/tinyland-security && pnpm build
@@ -53,7 +53,7 @@ npm_package(
         "package.json",
         ":tinyland_security",
     ],
-    package = "@tinyland-inc/tinyland-security",
+    package = "@tummycrypt/tinyland-security",
     version = "0.1.0",
     visibility = ["//visibility:public"],
 )

@@ -1,5 +1,5 @@
 /**
- * Shared type definitions for @tinyland-inc/tinyland-security
+ * Shared type definitions for @tummycrypt/tinyland-security
  *
  * These types decouple the security package from SvelteKit-specific
  * concerns and provide config injection for secrets.

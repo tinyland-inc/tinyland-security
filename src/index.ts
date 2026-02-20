@@ -1,12 +1,12 @@
 /**
- * @tinyland-inc/tinyland-security
+ * @tummycrypt/tinyland-security
  *
  * Security primitives for IP hashing, encryption, risk scoring,
  * device detection, VPN detection, rate limiting, and timing-safe utilities.
  *
  * Usage:
  * ```typescript
- * import { configureSecurity, hashIp, detectVPN } from '@tinyland-inc/tinyland-security';
+ * import { configureSecurity, hashIp, detectVPN } from '@tummycrypt/tinyland-security';
  *
  * // Initialize once at startup
  * configureSecurity({
@@ -23,7 +23,7 @@
  * const vpnResult = await detectVPN('8.8.8.8');
  * ```
  *
- * @module @tinyland-inc/tinyland-security
+ * @module @tummycrypt/tinyland-security
  */
 
 // Configuration

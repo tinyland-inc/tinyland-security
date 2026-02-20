@@ -1,5 +1,5 @@
 {
-  "name": "@tinyland-inc/tinyland-security",
+  "name": "@tummycrypt/tinyland-security",
   "version": "0.1.0",
   "description": "IP hashing, encryption, risk scoring, device detection, VPN detection, rate limiting, and timing-safe utilities",
   "type": "module",
@@ -51,14 +51,18 @@
     "vitest": "^4.0.0"
   },
   "peerDependencies": {
-    "@tinyland-inc/tinyland-auth": "workspace:*"
+    "@tummycrypt/tinyland-auth": "workspace:*"
   },
   "peerDependenciesMeta": {
-    "@tinyland-inc/tinyland-auth": {
+    "@tummycrypt/tinyland-auth": {
       "optional": true
     }
   },
   "engines": {
-    "node": ">=18.0.0"
+    "node": ">=22.0.0"
+  },
+  "publishConfig": {
+    "registry": "https://registry.npmjs.org/",
+    "access": "public"
   }
 }
