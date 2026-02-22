@@ -1,6 +1,6 @@
 {
   "name": "@tummycrypt/tinyland-security",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "IP hashing, encryption, risk scoring, device detection, VPN detection, rate limiting, and timing-safe utilities",
   "type": "module",
   "main": "./dist/index.js",
