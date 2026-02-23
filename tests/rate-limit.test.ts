@@ -1,13 +1,13 @@
-/**
- * Rate Limiting Unit Tests + Property-Based Testing
- *
- * Tests for:
- *   - Window expiry resets counters
- *   - Counter increment on each check
- *   - Limit enforcement and blocking
- *   - Key generation helpers
- *   - PBT: never exceeds configured limit
- */
+
+
+
+
+
+
+
+
+
+
 
 import { describe, it, expect, beforeEach, afterEach, vi } from 'vitest';
 import { test as fcTest } from '@fast-check/vitest';
@@ -16,9 +16,9 @@ import { RateLimiter, RATE_LIMIT_CONFIGS, getClientIP, createIPKey, createSessio
 import { RateLimitStore } from '../src/rateLimitStore.js';
 import type { RateLimitConfig } from '../src/rateLimit.js';
 
-// ============================================================================
-// Test helpers
-// ============================================================================
+
+
+
 
 function createLimiter(opts?: { bypassForTesting?: boolean; store?: RateLimitStore }): RateLimiter {
   return new RateLimiter({
@@ -28,14 +28,14 @@ function createLimiter(opts?: { bypassForTesting?: boolean; store?: RateLimitSto
 }
 
 const testConfig: RateLimitConfig = {
-  windowMs: 1000,        // 1 second window (fast for tests)
+  windowMs: 1000,        
   maxAttempts: 3,
-  blockDurationMs: 2000, // 2 second block
+  blockDurationMs: 2000, 
 };
 
-// ============================================================================
-// Unit Tests
-// ============================================================================
+
+
+
 
 describe('RateLimiter', () => {
   let limiter: RateLimiter;
@@ -69,16 +69,16 @@ describe('RateLimiter', () => {
       const r3 = await limiter.checkLimit('test-key', testConfig);
       expect(r3.stats.attempts).toBe(3);
       expect(r3.stats.remaining).toBe(0);
-      expect(r3.allowed).toBe(true); // Last allowed attempt
+      expect(r3.allowed).toBe(true); 
     });
 
     it('should block after exceeding maxAttempts', async () => {
-      // Exhaust the limit
+      
       for (let i = 0; i < testConfig.maxAttempts; i++) {
         await limiter.checkLimit('block-key', testConfig);
       }
 
-      // Next attempt should be blocked
+      
       const blocked = await limiter.checkLimit('block-key', testConfig);
       expect(blocked.allowed).toBe(false);
       expect(blocked.stats.isBlocked).toBe(true);
@@ -90,10 +90,10 @@ describe('RateLimiter', () => {
       for (let i = 0; i < testConfig.maxAttempts; i++) {
         await limiter.checkLimit('persist-key', testConfig);
       }
-      // Trigger block
+      
       await limiter.checkLimit('persist-key', testConfig);
 
-      // Immediately check again -- still blocked
+      
       const stillBlocked = await limiter.checkLimit('persist-key', testConfig);
       expect(stillBlocked.allowed).toBe(false);
       expect(stillBlocked.stats.isBlocked).toBe(true);
@@ -111,7 +111,7 @@ describe('RateLimiter', () => {
       await limiter.checkLimit('window-key', shortWindow);
       await limiter.checkLimit('window-key', shortWindow);
 
-      // Advance past window
+      
       vi.advanceTimersByTime(600);
 
       const afterExpiry = await limiter.checkLimit('window-key', shortWindow);
@@ -178,9 +178,9 @@ describe('RateLimiter', () => {
   });
 });
 
-// ============================================================================
-// Key generation helpers
-// ============================================================================
+
+
+
 
 describe('Key generation helpers', () => {
   it('createIPKey should produce correct format', () => {
@@ -199,9 +199,9 @@ describe('Key generation helpers', () => {
   });
 });
 
-// ============================================================================
-// getClientIP
-// ============================================================================
+
+
+
 
 describe('getClientIP', () => {
   function makeRequest(headerMap: Record<string, string>) {
@@ -236,9 +236,9 @@ describe('getClientIP', () => {
   });
 });
 
-// ============================================================================
-// Predefined config validation
-// ============================================================================
+
+
+
 
 describe('RATE_LIMIT_CONFIGS', () => {
   it('login config should have reasonable defaults', () => {
@@ -261,9 +261,9 @@ describe('RATE_LIMIT_CONFIGS', () => {
   });
 });
 
-// ============================================================================
-// RateLimitStore
-// ============================================================================
+
+
+
 
 describe('RateLimitStore', () => {
   let store: RateLimitStore;
@@ -314,7 +314,7 @@ describe('RateLimitStore', () => {
       attempts: 10,
       firstAttemptAt: past,
       lastAttemptAt: past,
-      blockedUntil: past + 1000, // Expired block
+      blockedUntil: past + 1000, 
     });
     const cleaned = await store.cleanup();
     expect(cleaned).toBe(1);
@@ -322,19 +322,19 @@ describe('RateLimitStore', () => {
   });
 });
 
-// ============================================================================
-// Property-Based Tests: Rate limiting never exceeds configured limit
-// ============================================================================
+
+
+
 
 describe('PBT: Rate limiting invariants', () => {
   fcTest.prop([
-    fc.integer({ min: 1, max: 20 }),   // maxAttempts
-    fc.integer({ min: 1, max: 50 }),    // numRequests
+    fc.integer({ min: 1, max: 20 }),   
+    fc.integer({ min: 1, max: 50 }),    
   ])('should never allow more than maxAttempts within a window', async (maxAttempts, numRequests) => {
     const store = new RateLimitStore();
     const limiter = new RateLimiter({ bypassForTesting: false, store });
     const config: RateLimitConfig = {
-      windowMs: 60_000, // 60 seconds -- won't expire during test
+      windowMs: 60_000, 
       maxAttempts,
       blockDurationMs: 60_000,
     };
@@ -348,15 +348,15 @@ describe('PBT: Rate limiting invariants', () => {
       }
     }
 
-    // The invariant: allowed requests never exceed maxAttempts
+    
     expect(allowedCount).toBeLessThanOrEqual(maxAttempts);
 
     limiter.destroy();
   });
 
   fcTest.prop([
-    fc.string({ minLength: 1, maxLength: 50 }),  // key prefix
-    fc.string({ minLength: 1, maxLength: 50 }),   // key suffix
+    fc.string({ minLength: 1, maxLength: 50 }),  
+    fc.string({ minLength: 1, maxLength: 50 }),   
   ])('different keys should be tracked independently', async (prefix, suffix) => {
     const store = new RateLimitStore();
     const limiter = new RateLimiter({ bypassForTesting: false, store });
@@ -369,11 +369,11 @@ describe('PBT: Rate limiting invariants', () => {
     const keyA = `a:${prefix}`;
     const keyB = `b:${suffix}`;
 
-    // Exhaust key A
+    
     await limiter.checkLimit(keyA, config);
     const blockedA = await limiter.checkLimit(keyA, config);
 
-    // Key B should still be allowed
+    
     const resultB = await limiter.checkLimit(keyB, config);
 
     expect(blockedA.allowed).toBe(false);

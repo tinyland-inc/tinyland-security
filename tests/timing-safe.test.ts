@@ -1,15 +1,15 @@
-/**
- * Timing-Safe Comparison Unit Tests + Property-Based Testing
- *
- * Tests for:
- *   - Equal strings pass comparison
- *   - Different strings fail comparison
- *   - Length-differing strings handled safely
- *   - timingSafeVerify normalizes response time
- *   - timingSafeError returns generic message
- *   - TimingMetrics statistics tracking
- *   - PBT: comparison result matches regular equality
- */
+
+
+
+
+
+
+
+
+
+
+
+
 
 import { describe, it, expect } from 'vitest';
 import { test as fcTest } from '@fast-check/vitest';
@@ -22,9 +22,9 @@ import {
   TimingMetrics,
 } from '../src/timingSafe.js';
 
-// ============================================================================
-// constantTimeCompare
-// ============================================================================
+
+
+
 
 describe('constantTimeCompare', () => {
   describe('equal strings', () => {
@@ -90,9 +90,9 @@ describe('constantTimeCompare', () => {
   });
 });
 
-// ============================================================================
-// timingSafeVerify
-// ============================================================================
+
+
+
 
 describe('timingSafeVerify', () => {
   it('should return the result of the verify function', async () => {
@@ -110,7 +110,7 @@ describe('timingSafeVerify', () => {
     const start = Date.now();
     await timingSafeVerify(async () => true, targetMs);
     const elapsed = Date.now() - start;
-    // Allow 10ms tolerance for timer granularity
+    
     expect(elapsed).toBeGreaterThanOrEqual(targetMs - 10);
   });
 
@@ -124,9 +124,9 @@ describe('timingSafeVerify', () => {
   });
 });
 
-// ============================================================================
-// timingSafeQuery
-// ============================================================================
+
+
+
 
 describe('timingSafeQuery', () => {
   it('should return query result', async () => {
@@ -156,9 +156,9 @@ describe('timingSafeQuery', () => {
   });
 });
 
-// ============================================================================
-// timingSafeError
-// ============================================================================
+
+
+
 
 describe('timingSafeError', () => {
   it('should return a generic error message regardless of input', () => {
@@ -175,9 +175,9 @@ describe('timingSafeError', () => {
   });
 });
 
-// ============================================================================
-// TimingMetrics
-// ============================================================================
+
+
+
 
 describe('TimingMetrics', () => {
   it('should start with zero stats', () => {
@@ -238,20 +238,20 @@ describe('TimingMetrics', () => {
 
   it('should evict old measurements when exceeding max', () => {
     const metrics = new TimingMetrics();
-    // Record 1001 measurements (max is 1000)
+    
     for (let i = 0; i < 1001; i++) {
       metrics.record(i);
     }
 
     const stats = metrics.getStats();
-    // The first measurement (0) should have been evicted
+    
     expect(stats.min).toBe(1);
   });
 });
 
-// ============================================================================
-// Property-Based Tests
-// ============================================================================
+
+
+
 
 describe('PBT: Timing-safe comparison invariants', () => {
   fcTest.prop([fc.string()])(
@@ -289,7 +289,7 @@ describe('PBT: Timing-safe comparison invariants', () => {
     (errorType) => {
       const result = timingSafeError(errorType);
       expect(result).toBe('Invalid credentials');
-      // The result should not contain any part of the input (unless the input happens to be a substring of "Invalid credentials")
+      
       if (errorType.length > 0 && !('Invalid credentials'.includes(errorType))) {
         expect(result).not.toContain(errorType);
       }

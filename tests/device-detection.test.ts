@@ -1,24 +1,24 @@
-/**
- * Device Detection Unit Tests
- *
- * Tests for:
- *   - Mobile device classification
- *   - Tablet device classification
- *   - Desktop device classification
- *   - Bot/empty UA handling
- *   - Browser info extraction (Chrome, Firefox, Safari, Edge, Opera)
- *   - OS info extraction (Windows, macOS, iOS, Android, Linux)
- */
+
+
+
+
+
+
+
+
+
+
+
 
 import { describe, it, expect } from 'vitest';
 import { detectDeviceType, extractBrowserInfo, extractOSInfo } from '../src/deviceDetection.js';
 
-// ============================================================================
-// Real-world User-Agent strings
-// ============================================================================
+
+
+
 
 const USER_AGENTS = {
-  // Desktop browsers
+  
   chromeWindows:
     'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',
   firefoxLinux:
@@ -30,7 +30,7 @@ const USER_AGENTS = {
   operaWindows:
     'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36 OPR/106.0.0.0',
 
-  // Mobile devices
+  
   iphone:
     'Mozilla/5.0 (iPhone; CPU iPhone OS 17_2_1 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.2 Mobile/15E148 Safari/604.1',
   androidMobile:
@@ -38,7 +38,7 @@ const USER_AGENTS = {
   windowsPhone:
     'Mozilla/5.0 (Windows Phone 10.0; Android 6.0.1; Microsoft; Lumia 950) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/52.0.2743.116 Mobile Safari/537.36 Edge/15.15254',
 
-  // Tablets
+  
   ipad:
     'Mozilla/5.0 (iPad; CPU OS 17_2_1 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.2 Mobile/15E148 Safari/604.1',
   androidTablet:
@@ -48,15 +48,15 @@ const USER_AGENTS = {
   playbook:
     'Mozilla/5.0 (PlayBook; U; RIM Tablet OS 2.1.0; en-US) AppleWebKit/536.2+ (KHTML, like Gecko) Version/7.2.1.0 Safari/536.2+',
 
-  // Bots / empty
+  
   googlebot:
     'Mozilla/5.0 (compatible; Googlebot/2.1; +http://www.google.com/bot.html)',
   empty: '',
 };
 
-// ============================================================================
-// Device Type Detection
-// ============================================================================
+
+
+
 
 describe('detectDeviceType', () => {
   describe('mobile devices', () => {
@@ -79,7 +79,7 @@ describe('detectDeviceType', () => {
     });
 
     it('should detect Android tablet as tablet', () => {
-      // Android tablet UAs typically lack "mobile"
+      
       expect(detectDeviceType(USER_AGENTS.androidTablet)).toBe('tablet');
     });
 
@@ -116,7 +116,7 @@ describe('detectDeviceType', () => {
     });
 
     it('should return desktop for bot user agents', () => {
-      // Bots don't match mobile/tablet patterns, so they fall through to desktop
+      
       expect(detectDeviceType(USER_AGENTS.googlebot)).toBe('desktop');
     });
 
@@ -127,9 +127,9 @@ describe('detectDeviceType', () => {
   });
 });
 
-// ============================================================================
-// Browser Info Extraction
-// ============================================================================
+
+
+
 
 describe('extractBrowserInfo', () => {
   it('should detect Chrome', () => {
@@ -175,9 +175,9 @@ describe('extractBrowserInfo', () => {
   });
 });
 
-// ============================================================================
-// OS Info Extraction
-// ============================================================================
+
+
+
 
 describe('extractOSInfo', () => {
   it('should detect Windows 10/11', () => {

@@ -1,14 +1,14 @@
-/**
- * IP Hashing Unit Tests + Property-Based Testing
- *
- * Tests for:
- *   - Deterministic hashing (same IP -> same hash)
- *   - Different IPs -> different hashes
- *   - Hash format validation (16 hex chars)
- *   - IP masking
- *   - Salt generation
- *   - PBT: deterministic for same input, different for different inputs
- */
+
+
+
+
+
+
+
+
+
+
+
 
 import { describe, it, expect, beforeEach, afterEach } from 'vitest';
 import { test as fcTest } from '@fast-check/vitest';
@@ -16,9 +16,9 @@ import fc from 'fast-check';
 import { hashIp, maskIp, isValidIpHash, generateSalt } from '../src/ipHashing.js';
 import { configureSecurity, resetSecurityConfig } from '../src/config.js';
 
-// ============================================================================
-// Test helpers
-// ============================================================================
+
+
+
 
 const TEST_SALT = 'test-salt-for-ip-hashing-unit-tests-32bytes!!';
 
@@ -31,9 +31,9 @@ function setupTestConfig(salt: string = TEST_SALT): void {
   });
 }
 
-// ============================================================================
-// Arbitraries for PBT
-// ============================================================================
+
+
+
 
 const ipv4Arb = fc
   .tuple(
@@ -44,9 +44,9 @@ const ipv4Arb = fc
   )
   .map(([a, b, c, d]) => `${a}.${b}.${c}.${d}`);
 
-// ============================================================================
-// Unit Tests
-// ============================================================================
+
+
+
 
 describe('IP Hashing', () => {
   beforeEach(() => {
@@ -101,7 +101,7 @@ describe('IP Hashing', () => {
       const hashNull = hashIp(null as unknown as string);
       const hashUndefined = hashIp(undefined as unknown as string);
 
-      // All invalid inputs should resolve to the same fallback hash
+      
       expect(hashEmpty).toBe(hashNull);
       expect(hashNull).toBe(hashUndefined);
       expect(hashEmpty).toMatch(/^[a-f0-9]{16}$/);
@@ -116,7 +116,7 @@ describe('IP Hashing', () => {
     });
 
     it('should return non-IPv4 addresses unchanged', () => {
-      // The implementation only handles IPv4 (4-part dotted)
+      
       expect(maskIp('2001:db8::1')).toBe('2001:db8::1');
     });
   });
@@ -131,9 +131,9 @@ describe('IP Hashing', () => {
     it('should reject invalid hashes', () => {
       expect(isValidIpHash('')).toBe(false);
       expect(isValidIpHash('short')).toBe(false);
-      expect(isValidIpHash('ABCDEF0123456789')).toBe(false); // uppercase
-      expect(isValidIpHash('abcdef012345678g')).toBe(false); // non-hex
-      expect(isValidIpHash('abcdef01234567890')).toBe(false); // too long
+      expect(isValidIpHash('ABCDEF0123456789')).toBe(false); 
+      expect(isValidIpHash('abcdef012345678g')).toBe(false); 
+      expect(isValidIpHash('abcdef01234567890')).toBe(false); 
     });
   });
 
@@ -152,9 +152,9 @@ describe('IP Hashing', () => {
   });
 });
 
-// ============================================================================
-// Property-Based Tests
-// ============================================================================
+
+
+
 
 describe('PBT: IP hashing invariants', () => {
   beforeEach(() => {
@@ -185,7 +185,7 @@ describe('PBT: IP hashing invariants', () => {
   fcTest.prop([ipv4Arb, ipv4Arb])(
     'different IPs produce different hashes (with high probability)',
     (ip1, ip2) => {
-      // Only assert when IPs are actually different
+      
       fc.pre(ip1 !== ip2);
       const hash1 = hashIp(ip1);
       const hash2 = hashIp(ip2);
