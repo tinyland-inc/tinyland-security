@@ -51,7 +51,7 @@
     "vitest": "^4.0.0"
   },
   "peerDependencies": {
-    "@tummycrypt/tinyland-auth": ">=0.1.0"
+    "@tummycrypt/tinyland-auth": "workspace:*"
   },
   "peerDependenciesMeta": {
     "@tummycrypt/tinyland-auth": {
