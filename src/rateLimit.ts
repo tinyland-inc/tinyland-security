@@ -1,9 +1,9 @@
-/**
- * Rate limiting for authentication endpoints
- * Prevents brute-force attacks with configurable limits and account lockouts
- *
- * @module rateLimit
- */
+
+
+
+
+
+
 
 import { RateLimitStore } from './rateLimitStore.js';
 import type { SecurityRequest } from './types.js';
@@ -68,9 +68,9 @@ export class RateLimiter {
     );
   }
 
-  /**
-   * Check if request is within rate limit
-   */
+  
+
+
   async checkLimit(key: string, config: RateLimitConfig): Promise<RateLimitResult> {
     if (this.bypassForTesting) {
       return {
@@ -190,9 +190,9 @@ export class RateLimiter {
   }
 }
 
-/**
- * Get client IP from a generic request (framework-agnostic)
- */
+
+
+
 export function getClientIP(request: SecurityRequest): string {
   const headers = request.headers;
   const forwarded = headers.get('x-forwarded-for');
@@ -208,23 +208,23 @@ export function getClientIP(request: SecurityRequest): string {
   return 'unknown';
 }
 
-/**
- * Create rate limit key for IP-based limiting
- */
+
+
+
 export function createIPKey(ip: string, prefix: string = 'ip'): string {
   return `${prefix}:${ip}`;
 }
 
-/**
- * Create rate limit key for session-based limiting
- */
+
+
+
 export function createSessionKey(sessionId: string, prefix: string = 'session'): string {
   return `${prefix}:${sessionId}`;
 }
 
-/**
- * Create rate limit key for account-based limiting
- */
+
+
+
 export function createAccountKey(identifier: string, prefix: string = 'account'): string {
   return `${prefix}:${identifier}`;
 }

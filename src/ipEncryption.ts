@@ -1,34 +1,34 @@
-/**
- * IP Address Encryption Utilities
- *
- * Provides AES-256-GCM encryption for reversible IP storage with audit logging.
- *
- * Security:
- * - Uses AES-256-GCM (authenticated encryption)
- * - Random 96-bit IV per encryption (prevents pattern detection)
- * - Authentication tag prevents tampering
- * - Key injected via SecurityConfig (not from $env)
- * - Decryption events logged to audit trail
- *
- * Format: `iv:authTag:encrypted` (all hex-encoded)
- *
- * @module ipEncryption
- */
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 import { createCipheriv, createDecipheriv, randomBytes } from 'crypto';
 import { getSecurityConfig, getLogger } from './config.js';
 
 const ALGORITHM = 'aes-256-gcm';
-const IV_LENGTH = 12; // 96 bits (recommended for GCM)
-const KEY_LENGTH = 32; // 256 bits
-const AUTH_TAG_LENGTH = 16; // 128 bits
+const IV_LENGTH = 12; 
+const KEY_LENGTH = 32; 
+const AUTH_TAG_LENGTH = 16; 
 
-/**
- * Get encryption key from config
- * Validates key length and format
- *
- * @throws Error if key is missing or invalid
- */
+
+
+
+
+
+
 function getEncryptionKey(): Buffer {
 	const config = getSecurityConfig();
 	const keyHex = config.ipEncryptionKey;
@@ -56,14 +56,14 @@ function getEncryptionKey(): Buffer {
 	return key;
 }
 
-/**
- * Encrypt an IP address using AES-256-GCM
- *
- * Returns format: `iv:authTag:encrypted` (hex-encoded)
- *
- * @param ip - IPv4 or IPv6 address to encrypt
- * @returns Encrypted string in format "iv:authTag:encrypted"
- */
+
+
+
+
+
+
+
+
 export function encryptIP(ip: string): string {
 	const logger = getLogger();
 
@@ -93,16 +93,16 @@ export function encryptIP(ip: string): string {
 	}
 }
 
-/**
- * Decrypt an encrypted IP address
- *
- * IMPORTANT: Logs decryption event for audit trail
- *
- * @param encrypted - Encrypted string in format "iv:authTag:encrypted"
- * @param adminUserId - Admin user ID (for audit logging)
- * @param reason - Reason for decryption (for audit logging)
- * @returns Original IP address
- */
+
+
+
+
+
+
+
+
+
+
 export function decryptIP(
 	encrypted: string,
 	adminUserId?: string,
@@ -155,9 +155,9 @@ export function decryptIP(
 	}
 }
 
-/**
- * Validate encrypted IP format without decrypting
- */
+
+
+
 export function isValidEncryptedIP(encrypted: string): boolean {
 	const parts = encrypted.split(':');
 	if (parts.length !== 3) return false;
@@ -175,18 +175,18 @@ export function isValidEncryptedIP(encrypted: string): boolean {
 	return true;
 }
 
-/**
- * Generate a secure encryption key
- *
- * @returns 64-character hexadecimal key (32 bytes)
- */
+
+
+
+
+
 export function generateEncryptionKey(): string {
 	return randomBytes(KEY_LENGTH).toString('hex');
 }
 
-/**
- * Mask an encrypted IP for display purposes
- */
+
+
+
 export function maskEncryptedIP(encrypted: string): string {
 	if (encrypted.length < 24) return encrypted;
 	return encrypted.substring(0, 12) + '...' + encrypted.substring(encrypted.length - 8);

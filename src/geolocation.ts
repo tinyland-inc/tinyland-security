@@ -1,12 +1,12 @@
-/**
- * Geolocation Service
- *
- * Provides IP-based geolocation using MaxMind GeoLite2 database.
- * MaxMind is an optional dependency -- if the database is not available,
- * geolocation functions gracefully return null.
- *
- * @module geolocation
- */
+
+
+
+
+
+
+
+
+
 
 import { getLogger } from './config.js';
 import path from 'path';
@@ -18,9 +18,9 @@ type AsnResponse = any;
 let geoipReader: Reader | null = null;
 let asnReader: Reader | null = null;
 
-/**
- * GeoIP location result
- */
+
+
+
 export interface GeoLocation {
 	country: string;
 	countryCode: string;
@@ -31,23 +31,23 @@ export interface GeoLocation {
 	accuracyRadius: number | null;
 }
 
-/**
- * ASN lookup result
- */
+
+
+
 export interface ASNResult {
 	asn: number;
 	organization: string;
 	network: string;
 }
 
-/**
- * Initialize GeoIP reader
- *
- * Call this on server startup to load the MaxMind database.
- * Non-fatal if database is missing -- geolocation becomes optional.
- *
- * @param options - Optional configuration for database paths
- */
+
+
+
+
+
+
+
+
 export async function initGeoIP(options?: {
 	cityDbPath?: string;
 	asnDbPath?: string;
@@ -90,12 +90,12 @@ export async function initGeoIP(options?: {
 	}
 }
 
-/**
- * Get geolocation for IP address
- *
- * @param ip - IPv4 or IPv6 address
- * @returns Location data or null
- */
+
+
+
+
+
+
 export function getLocation(ip: string): GeoLocation | null {
 	if (!geoipReader) {
 		return null;
@@ -124,12 +124,12 @@ export function getLocation(ip: string): GeoLocation | null {
 	}
 }
 
-/**
- * Get ASN information for IP address
- *
- * @param ip - IPv4 or IPv6 address
- * @returns ASN data or null
- */
+
+
+
+
+
+
 export function getASN(ip: string): ASNResult | null {
 	if (!asnReader) {
 		return null;
@@ -148,29 +148,29 @@ export function getASN(ip: string): ASNResult | null {
 	}
 }
 
-/**
- * Check if GeoIP service is available
- */
+
+
+
 export function isGeoIPAvailable(): boolean {
 	return geoipReader !== null;
 }
 
-/**
- * Check if ASN lookup service is available
- */
+
+
+
 export function isASNAvailable(): boolean {
 	return asnReader !== null;
 }
 
-/**
- * Calculate distance between two geographic coordinates using Haversine formula
- *
- * @param lat1 - Latitude of first point (-90 to 90)
- * @param lng1 - Longitude of first point (-180 to 180)
- * @param lat2 - Latitude of second point (-90 to 90)
- * @param lng2 - Longitude of second point (-180 to 180)
- * @returns Distance in kilometers
- */
+
+
+
+
+
+
+
+
+
 export function haversineDistance(
 	lat1: number,
 	lng1: number,
@@ -193,24 +193,24 @@ export function haversineDistance(
 	return R * c;
 }
 
-/**
- * Simple in-memory cache for reverse geocoding results
- */
+
+
+
 const reverseGeoCache = new Map<string, {
 	location: GeoLocation;
 	timestamp: number;
 }>();
 
-const CACHE_TTL = 24 * 60 * 60 * 1000; // 24 hours
+const CACHE_TTL = 24 * 60 * 60 * 1000; 
 
-/**
- * Reverse geocode coordinates to city name using OpenStreetMap Nominatim
- *
- * @param latitude - Latitude coordinate
- * @param longitude - Longitude coordinate
- * @param context - Optional context for structured logging
- * @returns GeoLocation with city name or null
- */
+
+
+
+
+
+
+
+
 export async function reverseGeocode(
 	latitude: number,
 	longitude: number,

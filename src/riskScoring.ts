@@ -1,24 +1,24 @@
-/**
- * Risk Scoring Service
- *
- * Calculates numerical risk scores for sessions based on multiple security signals.
- *
- * Risk Tiers:
- * - 0-20: Low risk (green) - Normal usage
- * - 21-50: Medium risk (yellow) - Additional monitoring
- * - 51-80: High risk (orange) - Require TOTP challenge
- * - 81+: Critical risk (red) - Auto-logout + alert
- *
- * @module riskScoring
- */
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 import { getLogger } from './config.js';
 
-/**
- * Enriched fingerprint input for risk scoring.
- * This is a minimal interface describing only the fields needed by risk scoring,
- * decoupled from the full EnrichedFingerprint type in the monorepo.
- */
+
+
+
+
+
 export interface RiskScoringInput {
 	fingerprintId: string;
 	fingerprintHash?: string;
@@ -47,9 +47,9 @@ export interface RiskScoringInput {
 	};
 }
 
-/**
- * Risk factor weights (configurable)
- */
+
+
+
 export const RISK_WEIGHTS = {
 	vpnDetected: 10,
 	datacenterIp: 20,
@@ -64,9 +64,9 @@ export const RISK_WEIGHTS = {
 	multipleSessions: 3
 } as const;
 
-/**
- * Risk score result
- */
+
+
+
 export interface RiskScore {
 	score: number;
 	tier: 'low' | 'medium' | 'high' | 'critical';
@@ -74,22 +74,22 @@ export interface RiskScore {
 	recommendation: string;
 }
 
-/**
- * Individual risk factor contribution
- */
+
+
+
 export interface RiskFactor {
 	name: string;
 	weight: number;
 	reason: string;
 }
 
-/**
- * Calculate risk score from enriched fingerprint data
- *
- * @param enriched - Data with security context for risk assessment
- * @param options - Previous location and concurrent session count
- * @returns Risk score with tier and factors
- */
+
+
+
+
+
+
+
 export function calculateRiskScore(
 	enriched: RiskScoringInput,
 	options: {
@@ -101,7 +101,7 @@ export function calculateRiskScore(
 	let score = 0;
 	const factors: RiskFactor[] = [];
 
-	// VPN Detection
+	
 	if (enriched.vpnDetection.isVPN) {
 		const vpnWeight = RISK_WEIGHTS.vpnDetected;
 		score += vpnWeight;
@@ -123,7 +123,7 @@ export function calculateRiskScore(
 		}
 	}
 
-	// Datacenter IP
+	
 	if (enriched.vpnDetection.method === 'datacenter') {
 		const datacenterWeight = RISK_WEIGHTS.datacenterIp;
 		score += datacenterWeight;
@@ -134,7 +134,7 @@ export function calculateRiskScore(
 		});
 	}
 
-	// Fingerprint Mismatch
+	
 	if (enriched.eventType === 'fingerprint_mismatch') {
 		const mismatchWeight = RISK_WEIGHTS.fingerprintMismatch;
 		score += mismatchWeight;
@@ -145,7 +145,7 @@ export function calculateRiskScore(
 		});
 	}
 
-	// Impossible Travel
+	
 	if (options.previousLocation && enriched.geoLocation) {
 		const travelCheck = checkImpossibleTravel(
 			options.previousLocation,
@@ -169,7 +169,7 @@ export function calculateRiskScore(
 		}
 	}
 
-	// TOTP Disabled
+	
 	if (enriched.userFlags && !enriched.userFlags.totpEnabled) {
 		const totpWeight = RISK_WEIGHTS.totpDisabled;
 		score += totpWeight;
@@ -180,7 +180,7 @@ export function calculateRiskScore(
 		});
 	}
 
-	// New Location
+	
 	if (options.previousLocation && enriched.geoLocation) {
 		if (
 			options.previousLocation.country !== enriched.geoLocation.country ||
@@ -196,7 +196,7 @@ export function calculateRiskScore(
 		}
 	}
 
-	// Unusual Time (2-5 AM local time)
+	
 	if (enriched.geoLocation?.timezone) {
 		const isUnusualTime = checkUnusualTime(enriched.timestamp, enriched.geoLocation.timezone);
 		if (isUnusualTime) {
@@ -210,7 +210,7 @@ export function calculateRiskScore(
 		}
 	}
 
-	// Failed Login Attempts
+	
 	if (enriched.userFlags && enriched.userFlags.failedLoginAttempts > 0) {
 		const failedWeight = RISK_WEIGHTS.failedAttempts * enriched.userFlags.failedLoginAttempts;
 		score += failedWeight;
@@ -221,7 +221,7 @@ export function calculateRiskScore(
 		});
 	}
 
-	// User Inactive
+	
 	if (enriched.userFlags && !enriched.userFlags.isActive) {
 		const inactiveWeight = RISK_WEIGHTS.userInactive;
 		score += inactiveWeight;
@@ -232,7 +232,7 @@ export function calculateRiskScore(
 		});
 	}
 
-	// Multiple Concurrent Sessions
+	
 	if (options.concurrentSessions && options.concurrentSessions > 1) {
 		const sessionWeight = RISK_WEIGHTS.multipleSessions * (options.concurrentSessions - 1);
 		score += sessionWeight;
@@ -258,9 +258,9 @@ export function calculateRiskScore(
 	return { score, tier, factors, recommendation };
 }
 
-/**
- * Calculate distance between two coordinates using Haversine formula
- */
+
+
+
 function calculateDistance(
 	lat1: number,
 	lon1: number,
@@ -284,9 +284,9 @@ function calculateDistance(
 	return R * c;
 }
 
-/**
- * Check for impossible travel between two locations
- */
+
+
+
 function checkImpossibleTravel(
 	previous: { country: string; city: string | null; timestamp: string; latitude: number | null; longitude: number | null },
 	current: { country: string; city: string | null; timestamp: string; latitude: number | null; longitude: number | null }
@@ -338,9 +338,9 @@ function checkImpossibleTravel(
 	return { impossible: false, reason: '' };
 }
 
-/**
- * Check if login time is unusual (2-5 AM local time)
- */
+
+
+
 function checkUnusualTime(timestamp: string, _timezone: string): boolean {
 	try {
 		const date = new Date(timestamp);
@@ -351,9 +351,9 @@ function checkUnusualTime(timestamp: string, _timezone: string): boolean {
 	}
 }
 
-/**
- * Determine risk tier from score
- */
+
+
+
 export function getRiskTier(score: number): 'low' | 'medium' | 'high' | 'critical' {
 	if (score >= 81) return 'critical';
 	if (score >= 51) return 'high';
@@ -361,9 +361,9 @@ export function getRiskTier(score: number): 'low' | 'medium' | 'high' | 'critica
 	return 'low';
 }
 
-/**
- * Get recommendation based on risk tier
- */
+
+
+
 function getRiskRecommendation(tier: string): string {
 	switch (tier) {
 		case 'critical':
@@ -378,9 +378,9 @@ function getRiskRecommendation(tier: string): string {
 	}
 }
 
-/**
- * Get color class for risk tier
- */
+
+
+
 export function getRiskColor(tier: string): string {
 	switch (tier) {
 		case 'critical': return 'error';
@@ -391,9 +391,9 @@ export function getRiskColor(tier: string): string {
 	}
 }
 
-/**
- * Get badge variant for risk tier
- */
+
+
+
 export function getRiskBadgeVariant(tier: string): string {
 	switch (tier) {
 		case 'critical': return 'variant-filled-error';

@@ -1,16 +1,16 @@
-/**
- * In-memory rate limit storage with automatic cleanup
- *
- * For production use, consider replacing with Redis or another
- * persistent store. This in-memory store is suitable for
- * single-process deployments and testing.
- *
- * @module rateLimitStore
- */
+
+
+
+
+
+
+
+
+
 
 import type { RateLimitEntry } from './rateLimit.js';
 
-const CLEANUP_INTERVAL = 60 * 60 * 1000; // Clean up every hour
+const CLEANUP_INTERVAL = 60 * 60 * 1000; 
 
 export class RateLimitStore {
   private data: Map<string, RateLimitEntry> = new Map();
@@ -55,7 +55,7 @@ export class RateLimitStore {
       await this.cleanup();
     }, CLEANUP_INTERVAL);
 
-    // Don't prevent process exit
+    
     if (this.cleanupTimer && typeof this.cleanupTimer === 'object' && 'unref' in this.cleanupTimer) {
       (this.cleanupTimer as NodeJS.Timeout).unref();
     }

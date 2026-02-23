@@ -1,11 +1,11 @@
-/**
- * Login Anomaly Detection
- *
- * Detects unusual login patterns based on geolocation.
- * Flags logins from new countries or rapid location changes.
- *
- * @module loginAnomaly
- */
+
+
+
+
+
+
+
+
 
 import { getLocation, type GeoLocation } from './geolocation.js';
 import { getLogger } from './config.js';
@@ -26,13 +26,13 @@ export interface AnomalyResult {
 	severity?: 'low' | 'medium' | 'high';
 }
 
-/**
- * Check if login location is unusual for this user
- *
- * @param userId - User identifier
- * @param clientIp - Client IP address
- * @returns Anomaly detection result
- */
+
+
+
+
+
+
+
 export async function detectLoginAnomaly(
 	userId: string,
 	clientIp: string
@@ -107,16 +107,16 @@ export async function detectLoginAnomaly(
 	return { anomaly: false, location };
 }
 
-/**
- * Get login history for user (for debugging/admin)
- */
+
+
+
 export function getUserLoginHistory(userId: string): LoginHistory | null {
 	return loginHistories.get(userId) || null;
 }
 
-/**
- * Clear login history for user
- */
+
+
+
 export function clearUserLoginHistory(userId: string): void {
 	const logger = getLogger();
 	const removed = loginHistories.delete(userId);

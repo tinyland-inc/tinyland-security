@@ -1,20 +1,20 @@
-/**
- * Device Type Detection from User-Agent
- *
- * Classifies devices as mobile, tablet, or desktop based on User-Agent strings.
- * Uses simple but effective regex patterns.
- *
- * @module deviceDetection
- */
+
+
+
+
+
+
+
+
 
 import type { DeviceType } from './types.js';
 
-/**
- * Detect device type from User-Agent string
- *
- * @param userAgent - User-Agent header value
- * @returns Device type classification
- */
+
+
+
+
+
+
 export function detectDeviceType(userAgent: string): DeviceType {
 	if (!userAgent) {
 		return 'unknown';
@@ -22,7 +22,7 @@ export function detectDeviceType(userAgent: string): DeviceType {
 
 	const ua = userAgent.toLowerCase();
 
-	// Mobile devices
+	
 	const mobilePatterns = [
 		/android/i,
 		/webos/i,
@@ -33,36 +33,36 @@ export function detectDeviceType(userAgent: string): DeviceType {
 		/mobile/i
 	];
 
-	// Tablet devices (check before mobile, as some tablets have "mobile" in UA)
+	
 	const tabletPatterns = [
 		/ipad/i,
-		/android(?!.*mobile)/i,  // Android but not mobile (tablet)
+		/android(?!.*mobile)/i,  
 		/tablet/i,
 		/kindle/i,
 		/silk/i,
 		/playbook/i
 	];
 
-	// Check tablets first (more specific)
+	
 	if (tabletPatterns.some(pattern => pattern.test(ua))) {
 		return 'tablet';
 	}
 
-	// Then check mobile
+	
 	if (mobilePatterns.some(pattern => pattern.test(ua))) {
 		return 'mobile';
 	}
 
-	// Default to desktop
+	
 	return 'desktop';
 }
 
-/**
- * Extract browser name and version from User-Agent
- *
- * @param userAgent - User-Agent header value
- * @returns Browser info object
- */
+
+
+
+
+
+
 export function extractBrowserInfo(userAgent: string): {
 	name: string;
 	version: string;
@@ -73,7 +73,7 @@ export function extractBrowserInfo(userAgent: string): {
 
 	const ua = userAgent.toLowerCase();
 
-	// Opera must be checked before Chrome, as Opera UA contains "Chrome"
+	
 	if (ua.includes('opera') || ua.includes('opr')) {
 		const match = ua.match(/(?:opera|opr)\/([\d.]+)/);
 		return { name: 'Opera', version: match ? match[1] : 'unknown' };
@@ -102,12 +102,12 @@ export function extractBrowserInfo(userAgent: string): {
 	return { name: 'unknown', version: 'unknown' };
 }
 
-/**
- * Extract OS name and version from User-Agent
- *
- * @param userAgent - User-Agent header value
- * @returns OS info object
- */
+
+
+
+
+
+
 export function extractOSInfo(userAgent: string): {
 	name: string;
 	version: string;
@@ -126,7 +126,7 @@ export function extractOSInfo(userAgent: string): {
 		return { name: 'Windows', version: 'unknown' };
 	}
 
-	// iOS must be checked before macOS, as iPhone/iPad UAs contain "Mac OS X"
+	
 	if (ua.includes('iphone') || ua.includes('ipad')) {
 		const match = ua.match(/os ([\d_]+)/);
 		const version = match ? match[1].replace(/_/g, '.') : 'unknown';

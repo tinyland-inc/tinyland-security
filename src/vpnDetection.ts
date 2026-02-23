@@ -1,19 +1,19 @@
-/**
- * VPN Detection Service
- *
- * ASN-based VPN detection using MaxMind GeoLite2-ASN database.
- * Identifies VPN providers and datacenter IPs with high accuracy.
- *
- * @module vpnDetection
- */
+
+
+
+
+
+
+
+
 
 import { createHash } from 'crypto';
 import { getLogger } from './config.js';
 import { getASN, isASNAvailable } from './geolocation.js';
 
-/**
- * VPN Provider Detection Result
- */
+
+
+
 export interface VPNDetectionResult {
 	isVPN: boolean;
 	provider: string | null;
@@ -22,9 +22,9 @@ export interface VPNDetectionResult {
 	details?: string;
 }
 
-/**
- * Known VPN provider ASN ranges
- */
+
+
+
 const KNOWN_VPN_ASNS: Record<number, string> = {
 	209605: 'NordVPN',
 	213414: 'ProtonVPN',
@@ -40,9 +40,9 @@ const KNOWN_VPN_ASNS: Record<number, string> = {
 	11878: 'VyprVPN'
 };
 
-/**
- * Known datacenter/hosting provider ASNs
- */
+
+
+
 const DATACENTER_ASNS: Record<number, string> = {
 	16509: 'Amazon Web Services',
 	14618: 'Amazon AWS',
@@ -55,12 +55,12 @@ const DATACENTER_ASNS: Record<number, string> = {
 	24940: 'Hetzner'
 };
 
-/**
- * Detect VPN based on IP address
- *
- * @param ip - IPv4 or IPv6 address
- * @returns VPN detection result with confidence level
- */
+
+
+
+
+
+
 export async function detectVPN(ip: string): Promise<VPNDetectionResult> {
 	const logger = getLogger();
 
@@ -133,9 +133,9 @@ export async function detectVPN(ip: string): Promise<VPNDetectionResult> {
 	}
 }
 
-/**
- * Check if IP is private/local (RFC 1918, loopback, link-local)
- */
+
+
+
 export function isPrivateIP(ip: string): boolean {
 	const ipv4Private = [
 		/^127\./,
@@ -155,24 +155,24 @@ export function isPrivateIP(ip: string): boolean {
 	return ipv4Private.some((regex) => regex.test(ip)) || ipv6Private.some((regex) => regex.test(ip));
 }
 
-/**
- * Hash IP for privacy-compliant logging
- */
+
+
+
 function hashIP(ip: string): string {
 	return createHash('sha256').update(ip).digest('hex').substring(0, 16);
 }
 
-/**
- * ASN Lookup Interface
- */
+
+
+
 interface ASNLookupResult {
 	asn: number;
 	organization: string;
 }
 
-/**
- * Lookup ASN for IP address using the geolocation module
- */
+
+
+
 async function lookupASN(ip: string): Promise<ASNLookupResult | null> {
 	if (!isASNAvailable()) {
 		return null;
@@ -189,9 +189,9 @@ async function lookupASN(ip: string): Promise<ASNLookupResult | null> {
 	};
 }
 
-/**
- * Get VPN detection capabilities status
- */
+
+
+
 export function getVPNDetectionCapabilities() {
 	const asnAvailable = isASNAvailable();
 

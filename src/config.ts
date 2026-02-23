@@ -1,31 +1,31 @@
-/**
- * Global configuration for @tummycrypt/tinyland-security
- *
- * Provides a singleton configuration store that replaces
- * SvelteKit's $env/dynamic/private and $lib/server/logger imports.
- *
- * Usage:
- * ```typescript
- * import { configureSecurity } from '@tummycrypt/tinyland-security';
- *
- * configureSecurity({
- *   config: {
- *     ipEncryptionKey: process.env.IP_ENCRYPTION_KEY,
- *     ipHashSalt: process.env.IP_HASH_SALT,
- *     nodeEnv: process.env.NODE_ENV,
- *   },
- *   logger: myLogger,
- * });
- * ```
- *
- * @module config
- */
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 import type { SecurityConfig, SecurityLogger } from './types.js';
 
-// ============================================================================
-// Default console logger (fallback when no logger is configured)
-// ============================================================================
+
+
+
 
 const consoleLogger: SecurityLogger = {
 	info(message: string, data?: Record<string, unknown>) {
@@ -44,21 +44,21 @@ const consoleLogger: SecurityLogger = {
 	},
 };
 
-// ============================================================================
-// Global state
-// ============================================================================
+
+
+
 
 let _config: SecurityConfig = {};
 let _logger: SecurityLogger = consoleLogger;
 
-// ============================================================================
-// Public API
-// ============================================================================
 
-/**
- * Configure the security package with secrets and a logger.
- * Call this once during application startup before using any security functions.
- */
+
+
+
+
+
+
+
 export function configureSecurity(options: {
 	config?: SecurityConfig;
 	logger?: SecurityLogger;
@@ -71,26 +71,26 @@ export function configureSecurity(options: {
 	}
 }
 
-/**
- * Get the current security configuration.
- * @internal Used by security modules to read injected config.
- */
+
+
+
+
 export function getSecurityConfig(): SecurityConfig {
 	return _config;
 }
 
-/**
- * Get the current logger instance.
- * @internal Used by security modules for structured logging.
- */
+
+
+
+
 export function getLogger(): SecurityLogger {
 	return _logger;
 }
 
-/**
- * Reset configuration to defaults (for testing).
- * @internal
- */
+
+
+
+
 export function resetSecurityConfig(): void {
 	_config = {};
 	_logger = consoleLogger;

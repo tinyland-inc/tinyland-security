@@ -1,17 +1,17 @@
-/**
- * User Agent Parsing Service
- *
- * Parses user agent strings to extract browser, OS, and device information.
- * Uses lightweight regex-based parsing (no external dependencies needed).
- *
- * @module userAgentParser
- */
+
+
+
+
+
+
+
+
 
 import { getLogger } from './config.js';
 
-/**
- * Parsed browser information
- */
+
+
+
 export interface BrowserInfo {
 	name: string;
 	version: string;
@@ -23,12 +23,12 @@ export interface BrowserInfo {
 	fullUA: string;
 }
 
-/**
- * Parse user agent string into structured browser info
- *
- * @param userAgent - User agent string from request headers
- * @returns Parsed browser information
- */
+
+
+
+
+
+
 export function parseUserAgent(userAgent: string): BrowserInfo {
 	const logger = getLogger();
 
@@ -190,9 +190,9 @@ function detectDeviceTypeFromUA(ua: string): 'mobile' | 'tablet' | 'desktop' {
 	return 'desktop';
 }
 
-/**
- * Get a human-friendly browser description
- */
+
+
+
 export function getBrowserDescription(info: BrowserInfo): string {
 	const browserPart = info.version !== 'Unknown' ? `${info.name} ${info.major}` : info.name;
 	const osPart = info.osVersion !== 'Unknown' ? `${info.os} ${info.osVersion}` : info.os;

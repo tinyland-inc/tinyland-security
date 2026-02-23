@@ -1,11 +1,11 @@
-/**
- * IP Ban Management
- *
- * In-memory IP ban list with file-backed persistence.
- * For production use, consider a database-backed implementation.
- *
- * @module ipBans
- */
+
+
+
+
+
+
+
+
 
 import { promises as fs } from 'fs';
 import path from 'path';
@@ -22,9 +22,9 @@ interface IpBan {
   is_active: boolean;
 }
 
-/**
- * Options for configuring the IP ban storage location
- */
+
+
+
 export interface IpBanStoreOptions {
   storageDir?: string;
 }
@@ -32,9 +32,9 @@ export interface IpBanStoreOptions {
 let SECURITY_DIR = path.join(process.cwd(), 'content', 'security');
 let IP_BANS_FILE = path.join(SECURITY_DIR, 'ip-bans.json');
 
-/**
- * Configure the storage location for IP bans
- */
+
+
+
 export function configureIpBanStore(options: IpBanStoreOptions): void {
   if (options.storageDir) {
     SECURITY_DIR = options.storageDir;

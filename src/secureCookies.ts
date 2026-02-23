@@ -1,11 +1,11 @@
-/**
- * Secure Cookie Utilities
- *
- * Provides standardized secure cookie options for session management.
- * All session data MUST be stored in httpOnly cookies, NEVER in URLs.
- *
- * @module secureCookies
- */
+
+
+
+
+
+
+
+
 
 interface CookieSerializeOptions {
   httpOnly?: boolean;
