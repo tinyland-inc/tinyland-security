@@ -1,6 +1,6 @@
 {
   "name": "@tummycrypt/tinyland-security",
-  "version": "0.2.0",
+  "version": "0.2.2",
   "description": "IP hashing, encryption, risk scoring, device detection, VPN detection, rate limiting, and timing-safe utilities",
   "type": "module",
   "main": "./dist/index.js",
@@ -20,10 +20,11 @@
     "build": "tsc",
     "dev": "tsc --watch",
     "clean": "rm -rf dist",
-    "prepublishOnly": "npm run build",
-    "test": "vitest",
+    "prepublishOnly": "pnpm build && pnpm check:package",
+    "test": "vitest run",
     "test:coverage": "vitest --coverage",
-    "typecheck": "tsc --noEmit"
+    "typecheck": "tsc --noEmit",
+    "check:package": "publint"
   },
   "keywords": [
     "security",
@@ -39,8 +40,7 @@
   "license": "Zlib AND LicenseRef-Tinyland-Proprietary",
   "repository": {
     "type": "git",
-    "url": "https://github.com/tinyland-inc/tinyland.dev",
-    "directory": "packages/tinyland-security"
+    "url": "git+https://github.com/tinyland-inc/tinyland-security.git"
   },
   "dependencies": {},
   "devDependencies": {
@@ -48,13 +48,19 @@
     "@types/node": "^20.0.0",
     "fast-check": "^4.3.0",
     "typescript": "^5.0.0",
-    "vitest": "^4.0.0"
+    "vitest": "^4.0.0",
+    "publint": "^0.3.18",
+    "@tummycrypt/tinyland-auth": "^0.2.2"
   },
   "peerDependencies": {
-    "@tummycrypt/tinyland-auth": "workspace:*"
+    "@tummycrypt/tinyland-auth": "^0.2.2",
+    "@maxmind/geoip2-node": ">=5.0.0"
   },
   "peerDependenciesMeta": {
     "@tummycrypt/tinyland-auth": {
+      "optional": true
+    },
+    "@maxmind/geoip2-node": {
       "optional": true
     }
   },
@@ -63,7 +69,11 @@
   },
   "publishConfig": {
     "registry": "https://registry.npmjs.org/",
-    "access": "public",
-    "provenance": true
+    "access": "public"
+  },
+  "packageManager": "pnpm@10.13.1",
+  "homepage": "https://github.com/tinyland-inc/tinyland-security",
+  "bugs": {
+    "url": "https://github.com/tinyland-inc/tinyland-security/issues"
   }
 }

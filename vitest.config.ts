@@ -12,7 +12,15 @@ export default defineConfig({
     globals: true,
     environment: 'node',
     include: ['tests/**/*.test.ts'],
-    pool: 'forks',
+    pool: 'threads',
+    deps: {
+      interopDefault: true,
+    },
+    server: {
+      deps: {
+        inline: ['@fast-check/vitest'],
+      },
+    },
     isolate: true,
     coverage: {
       provider: 'v8',
