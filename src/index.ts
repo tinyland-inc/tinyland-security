@@ -122,3 +122,13 @@ export {
 	deactivateIpBan, getActiveBans, cleanupExpiredBans,
 	configureIpBanStore
 } from './ipBans.js';
+
+
+export {
+	applyDefaultSecurityHeaders,
+	getDefaultSecurityHeaders,
+} from './securityHeaders.js';
+export type {
+	SecurityHeaderPreset,
+	SecurityHeadersOptions,
+} from './securityHeaders.js';
