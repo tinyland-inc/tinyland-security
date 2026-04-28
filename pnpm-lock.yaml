@@ -16,8 +16,8 @@ importers:
         specifier: ^0.2.4
         version: 0.2.4(vitest@4.1.5(@types/node@20.19.39)(vite@8.0.10(@types/node@20.19.39)))
       '@tummycrypt/tinyland-auth':
-        specifier: ^0.2.2
-        version: 0.2.2
+        specifier: ^0.3.0
+        version: 0.3.0
       '@types/node':
         specifier: ^20.0.0
         version: 20.19.39
@@ -182,8 +182,8 @@ packages:
   '@standard-schema/spec@1.1.0':
     resolution: {integrity: sha512-l2aFy5jALhniG5HgqrD6jXLi/rUWrKvqN/qJx6yoJsgKhblVd+iqqU4RCXavm/jPityDo5TCvKMnpjKnOriy0w==}
 
-  '@tummycrypt/tinyland-auth@0.2.2':
-    resolution: {integrity: sha512-HcuTX72ShsuwL00L4JHpCcNo3ow2af+gQdkXuzTEyLxVyMdrKtt5biFRhiTP/YMCBXZY9Ftunbjf0Q7JZ/06rQ==}
+  '@tummycrypt/tinyland-auth@0.3.0':
+    resolution: {integrity: sha512-RiDHH5EdhLS4uF2D/GEBAaVN3712E5Xtj9W4SnVycUE2BbVmIrCPTjif3vcHhwy0QmiwMNGKQWsRIXgHiMIcsw==}
     engines: {node: '>=22.0.0'}
     peerDependencies:
       '@sveltejs/kit': ^2.0.0
@@ -780,7 +780,7 @@ snapshots:
 
   '@standard-schema/spec@1.1.0': {}
 
-  '@tummycrypt/tinyland-auth@0.2.2':
+  '@tummycrypt/tinyland-auth@0.3.0':
     dependencies:
       bcryptjs: 2.4.3
       nanoid: 5.1.9
