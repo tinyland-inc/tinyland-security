@@ -2,16 +2,24 @@ name: CI
 on:
   push:
     branches: [main]
+    tags: ['v*']
   pull_request:
     branches: [main]
   workflow_dispatch:
+    inputs:
+      publish:
+        description: "Publish the selected ref after validation"
+        required: false
+        type: boolean
+        default: false
 permissions:
   actions: read
   contents: read
-  packages: read
+  packages: write
+  id-token: write
 jobs:
   package:
-    uses: tinyland-inc/ci-templates/.github/workflows/js-bazel-package.yml@21e0093a7586931ee69d716387e00556c6da7738
+    uses: tinyland-inc/ci-templates/.github/workflows/js-bazel-package.yml@53f03268571577260546e0bba850664f8cdaf441
     with:
       runner_mode: shared
       shared_runner_labels_json: ${{ vars.PRIMARY_LINUX_RUNNER_LABELS_JSON }}
@@ -29,5 +37,6 @@ jobs:
       package_dir: ./bazel-bin/pkg
       npm_access: public
       github_package_name: "@tummycrypt/tinyland-security"
-      dry_run: true
+      dry_run: ${{ !(github.event_name == 'workflow_dispatch' && inputs.publish == true) }}
+      publish_on_tag: true
     secrets: inherit
