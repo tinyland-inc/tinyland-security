@@ -1,6 +1,6 @@
 {
   "name": "@tummycrypt/tinyland-security",
-  "version": "0.3.0",
+  "version": "0.3.1",
   "description": "IP hashing, encryption, risk scoring, device detection, VPN detection, rate limiting, and timing-safe utilities",
   "type": "module",
   "main": "./dist/index.js",
@@ -50,10 +50,10 @@
     "typescript": "^5.0.0",
     "vitest": "^4.0.0",
     "publint": "^0.3.18",
-    "@tummycrypt/tinyland-auth": "^0.2.2"
+    "@tummycrypt/tinyland-auth": "^0.3.0"
   },
   "peerDependencies": {
-    "@tummycrypt/tinyland-auth": "^0.2.2",
+    "@tummycrypt/tinyland-auth": "^0.2.2 || ^0.3.0",
     "@maxmind/geoip2-node": ">=5.0.0"
   },
   "peerDependenciesMeta": {
