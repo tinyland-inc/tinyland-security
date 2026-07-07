@@ -53,7 +53,7 @@
     "@tummycrypt/tinyland-auth": "^0.3.0"
   },
   "peerDependencies": {
-    "@tummycrypt/tinyland-auth": "^0.2.2 || ^0.3.0",
+    "@tummycrypt/tinyland-auth": "^0.2.2 || ^0.3.0 || ^0.4.0",
     "@maxmind/geoip2-node": ">=5.0.0"
   },
   "peerDependenciesMeta": {
