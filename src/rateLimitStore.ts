@@ -10,9 +10,35 @@
 
 import type { RateLimitEntry } from './rateLimit.js';
 
-const CLEANUP_INTERVAL = 60 * 60 * 1000; 
+const CLEANUP_INTERVAL = 60 * 60 * 1000;
 
-export class RateLimitStore {
+/**
+ * Storage seam for the rate limiter.
+ *
+ * The default {@link RateLimitStore} keeps state in a per-process `Map`, which
+ * is correct for a single instance but leaks brute-force budget across a
+ * multi-replica deploy: an attacker can spread attempts over pods and each pod
+ * counts independently. Multi-replica deploys must inject a store backed by a
+ * shared substrate (see `SharedRateLimitStore`) so every replica reads and
+ * writes the same counter.
+ *
+ * The contract is intentionally tiny — read (`get`), write (`set`, carrying the
+ * `blockedUntil` deadline that shared backends translate into a TTL), and reset
+ * (`delete`) — keyed by the existing rate-limit keys.
+ */
+export interface IRateLimitStore {
+  get(key: string): Promise<RateLimitEntry | undefined>;
+  set(key: string, entry: RateLimitEntry): Promise<void>;
+  delete(key: string): Promise<void>;
+  /** Release any resources (timers, connections). Safe to call more than once. */
+  destroy(): void;
+}
+
+/**
+ * Default in-memory {@link IRateLimitStore}. Per-process and lost on restart —
+ * safe for single-instance/databaseless deploys, NOT safe across replicas.
+ */
+export class RateLimitStore implements IRateLimitStore {
   private data: Map<string, RateLimitEntry> = new Map();
   private cleanupTimer?: ReturnType<typeof setInterval>;
 
