@@ -77,4 +77,6 @@ export type { GeoLocation, ASNResult } from './geolocation.js';
 export type { BrowserInfo } from './userAgentParser.js';
 export type { AnomalyResult } from './loginAnomaly.js';
 export type { RateLimitConfig, RateLimitResult, RateLimitStats, RateLimitEntry } from './rateLimit.js';
+export type { IRateLimitStore } from './rateLimitStore.js';
+export type { RateLimitKVClient, SharedRateLimitStoreConfig } from './sharedRateLimitStore.js';
 export type { TempFingerprintInputs } from './temporaryFingerprint.js';

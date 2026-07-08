@@ -94,6 +94,15 @@ export {
 	RATE_LIMIT_CONFIGS
 } from './rateLimit.js';
 export { RateLimitStore } from './rateLimitStore.js';
+export type { IRateLimitStore } from './rateLimitStore.js';
+export {
+	SharedRateLimitStore,
+	createSharedRateLimitStore,
+} from './sharedRateLimitStore.js';
+export type {
+	RateLimitKVClient,
+	SharedRateLimitStoreConfig,
+} from './sharedRateLimitStore.js';
 
 
 export {

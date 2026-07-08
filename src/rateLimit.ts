@@ -6,6 +6,7 @@
 
 
 import { RateLimitStore } from './rateLimitStore.js';
+import type { IRateLimitStore } from './rateLimitStore.js';
 import type { SecurityRequest } from './types.js';
 
 export interface RateLimitConfig {
@@ -57,10 +58,10 @@ export const RATE_LIMIT_CONFIGS = {
 };
 
 export class RateLimiter {
-  private store: RateLimitStore;
+  private store: IRateLimitStore;
   private bypassForTesting: boolean;
 
-  constructor(options?: { bypassForTesting?: boolean; store?: RateLimitStore }) {
+  constructor(options?: { bypassForTesting?: boolean; store?: IRateLimitStore }) {
     this.store = options?.store ?? new RateLimitStore();
     this.bypassForTesting = options?.bypassForTesting ?? (
       process.env.NODE_ENV === 'test' ||
