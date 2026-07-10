@@ -47,7 +47,7 @@
     "@fast-check/vitest": "^0.2.4",
     "@types/node": "^20.0.0",
     "fast-check": "^4.3.0",
-    "typescript": "^5.0.0",
+    "typescript": "^7.0.2",
     "vitest": "^4.0.0",
     "publint": "^0.3.18",
     "@tummycrypt/tinyland-auth": "^0.3.0"
