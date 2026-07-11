@@ -57,7 +57,7 @@ npm_package(
         ":tinyland_security",
     ],
     package = "@tummycrypt/tinyland-security",
-    version = "0.3.0",
+    version = "0.3.2",
     visibility = ["//visibility:public"],
 )
 
@@ -69,6 +69,9 @@ vitest_bin.vitest_test(
     name = "test",
     data = [
         ":node_modules",
+        "BUILD.bazel",
+        "MODULE.bazel",
+        "package.json",
         "tsconfig.json",
         ":node_modules/vitest",
         ":node_modules/fast-check",
