@@ -1,8 +1,8 @@
 {
   "name": "@tummycrypt/tinyland-security",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "private": true,
-  "description": "IP hashing, encryption, risk scoring, device detection, VPN detection, rate limiting, timing-safe utilities and flat-file IP ban management",
+  "description": "IP hashing, encryption, risk scoring, device detection, VPN detection, rate limiting, timing-safe utilities, flat-file IP ban management and threat correlation",
   "type": "module",
   "main": "./dist/index.js",
   "module": "./dist/index.js",
@@ -15,6 +15,10 @@
     "./ip-bans": {
       "types": "./dist/ip-bans/index.d.ts",
       "import": "./dist/ip-bans/index.js"
+    },
+    "./threat-detection": {
+      "types": "./dist/threat-detection/index.d.ts",
+      "import": "./dist/threat-detection/index.js"
     }
   },
   "files": [
@@ -39,7 +43,11 @@
     "risk-scoring",
     "fingerprint",
     "timing-safe",
-    "ip-bans"
+    "ip-bans",
+    "threat-detection",
+    "impossible-travel",
+    "ip-rotation",
+    "threat-correlation"
   ],
   "author": "Tinyland.dev",
   "license": "Zlib AND LicenseRef-Tinyland-Proprietary",
