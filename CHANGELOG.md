@@ -1,5 +1,42 @@
 # Changelog
 
+## 1.1.0 (2026-10-14)
+
+Minor release: the package absorbs `@tummycrypt/tinyland-threat-detection`
+as a new subpath export (RU2/RU7). The toolchain and peer stack are the same
+as 1.0.0 (TypeScript 7.0.2, vitest 5.0.3, Bazel-only distribution), so this
+is additive and not a major bump (RU10 applies to stack changes). The root
+entry and `./ip-bans` are unchanged.
+
+### Added
+
+- `@tummycrypt/tinyland-security/threat-detection`: threat correlation, VPN
+  switching, IP rotation and impossible-travel detection, and security data
+  queries over Loki/Prometheus/Tempo backends, formerly published as
+  `@tummycrypt/tinyland-threat-detection` 0.2.x (registry module
+  `tummycrypt_tinyland_threat_detection`, now retired). The API is
+  unchanged: `configureThreatDetection`, `getThreatDetectionConfig`,
+  `resetThreatDetectionConfig`, `getLogger`, `getHaversineDistance`,
+  `ThreatCorrelationService`, `SecurityDataService` and all of the former
+  package's exported types. The source is byte-identical to
+  xoxd-ai/tinyland-threat-detection 29de166 apart from a provenance comment
+  in `index.ts`. It is a subpath, not part of the root entry, because the
+  root already exports VPN and device types whose names overlap
+  (for example `BrowserInfo`).
+
+### Migration from `@tummycrypt/tinyland-threat-detection`
+
+1. Re-pin: `bazel_dep(name = "tummycrypt_tinyland_security", version = "1.1.0")`
+   and pin the registry commit that carries it. Consumers still on 0.x of
+   this module move to the RU1 stack (TypeScript 7.0.2 exact) as described
+   under 1.0.0.
+2. Replace `@tummycrypt/tinyland-threat-detection` imports (and `vi.mock`
+   targets) with `@tummycrypt/tinyland-security/threat-detection`, then drop
+   the `tummycrypt_tinyland_threat_detection` bazel_dep, its
+   `npm_link_package` and any package.json entry for it.
+3. Runtime behaviour is identical, including the no-op logger and the
+   unconfigured backends until `configureThreatDetection` is called.
+
 ## 1.0.0 (2026-10-10)
 
 Major release: the toolchain and peer stack change (RU1/RU10), and the package
