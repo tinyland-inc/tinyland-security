@@ -1,9 +1,11 @@
 """
 BUILD.bazel for @tummycrypt/tinyland-security.
 
-Dual-mode build: works with both pnpm (standalone) and Bazel (CI/production).
-  Standalone: cd packages/tinyland-security && pnpm build
-  Monorepo:   bazel build //packages/tinyland-security/...
+Bazel is the build, test and distribution authority (RU6/RU8): consumers take
+this package through bazel_dep(name = "tummycrypt_tinyland_security") from the
+xoxd-ai bazel-registry. pnpm scripts remain for local diagnostics only.
+  bazel build //:pkg //:typecheck
+  bazel test //...
 """
 
 load("@aspect_rules_js//npm:defs.bzl", "npm_package")
@@ -57,7 +59,7 @@ npm_package(
         ":tinyland_security",
     ],
     package = "@tummycrypt/tinyland-security",
-    version = "1.1.0",
+    version = "1.1.1",
     visibility = ["//visibility:public"],
 )
 
