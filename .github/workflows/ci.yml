@@ -14,7 +14,7 @@ concurrency:
   cancel-in-progress: true
 jobs:
   package:
-    uses: xoxd-ai/ci-templates/.github/workflows/js-bazel-package.yml@v3.2.1
+    uses: xoxd-ai/ci-templates/.github/workflows/js-bazel-package.yml@v3.3.0
     with:
       runner_mode: repo_owned
       runner_labels_json: ${{ vars.PRIMARY_LINUX_RUNNER_LABELS_JSON }}
