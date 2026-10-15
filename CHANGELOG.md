@@ -1,5 +1,33 @@
 # Changelog
 
+## 1.1.1 (2026-10-15)
+
+Patch release: RU1/RU5 toolchain conformance and Bazel-only CI. The runtime
+code, the exports (root, `./ip-bans`, `./threat-detection`) and the emitted
+`dist/` are unchanged from 1.1.0.
+
+### Changed
+
+- `vite` 8.3.3 is now an exact devDependency (RU1/RU5). 1.1.0 left it to
+  vitest's peer range, which resolved 8.0.10. `@types/node` ^22.20.5,
+  `publint` ^0.3.25, and `engines.node` >=22.12.0 (the Vite 8 floor).
+- The pnpm lockfile is regenerated with pnpm 10.13.1. This clears the open
+  dev-chain advisories (nanoid, postcss, source-map-js); none of them ship
+  in `:pkg`.
+- CI moves to `xoxd-ai/ci-templates` js-bazel-package v3.2.1 and runs every
+  check through Bazel (`//:typecheck`, `//:test`, `//:pkg`, then publint on
+  `./bazel-bin/pkg`). The retired `publish_mode: hosted_exception` input is
+  gone; publication stays disabled (RU8).
+- Dependabot follows the RU5 shape: one weekly group per ecosystem, with the
+  estate pins (typescript, vite, vitest) ignored.
+- README added: Bazel-only consumption, exports and migration pointers.
+
+### Migration
+
+None for 1.1.0 consumers: bump
+`bazel_dep(name = "tummycrypt_tinyland_security", version = "1.1.1")`.
+Consumers on 0.x follow the 1.0.0 and 1.1.0 notes below.
+
 ## 1.1.0 (2026-10-14)
 
 Minor release: the package absorbs `@tummycrypt/tinyland-threat-detection`

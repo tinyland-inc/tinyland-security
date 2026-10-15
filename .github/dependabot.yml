@@ -1,26 +1,48 @@
 version: 2
+
+# RU5 (TIN-3692): one grouped weekly Dependabot PR per ecosystem.
+#
+# xoxd-ai/site.scaffold estate/versions.json is the SSOT for the exact
+# toolchain pins (typescript, vite, vitest). They move only through an estate
+# manifest bump, so they are ignored here for every update type. Everything
+# else lands in the one `weekly` group, majors included. @types/node majors
+# follow the Node runtime line (22), not Dependabot.
 updates:
-  - package-ecosystem: "github-actions"
-    directory: "/"
+  - package-ecosystem: 'npm'
+    directory: '/'
     schedule:
-      interval: "weekly"
+      interval: 'weekly'
+    target-branch: 'main'
     open-pull-requests-limit: 5
-    groups:
-      github-actions:
-        patterns:
-          - "*"
+    ignore:
+      # Estate pins (RU5): manifest bump only.
+      - dependency-name: 'typescript'
+      - dependency-name: 'vite'
+      - dependency-name: 'vitest'
+      - dependency-name: '@vitest/*'
+      - dependency-name: '@types/node'
         update-types:
-          - "minor"
-          - "patch"
-  - package-ecosystem: "npm"
-    directory: "/"
+          - 'version-update:semver-major'
+    groups:
+      weekly:
+        update-types:
+          - 'major'
+          - 'minor'
+          - 'patch'
+
+  - package-ecosystem: 'github-actions'
+    directory: '/'
     schedule:
-      interval: "weekly"
+      interval: 'weekly'
+    target-branch: 'main'
     open-pull-requests-limit: 5
-    groups:
-      npm:
-        patterns:
-          - "*"
+    ignore:
+      # ci-templates majors are an estate re-pin decision, not a Dependabot bump.
+      - dependency-name: 'xoxd-ai/ci-templates*'
         update-types:
-          - "minor"
-          - "patch"
+          - 'version-update:semver-major'
+    groups:
+      minor-and-patch:
+        update-types:
+          - 'minor'
+          - 'patch'
